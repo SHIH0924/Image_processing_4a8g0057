@@ -12,7 +12,7 @@ from imutils import perspective
 
 def Intkinter(intkimg):
     cv2image = cv.cvtColor(intkimg, cv.COLOR_BGR2RGBA)
-    # 將顏色由BRG轉為RGB
+    # 將顏色由 BRG 轉為 RGB
     img = Image.fromarray(cv2image)
     # OpenCV轉換PIL.Image格式
     imgtk = ImageTk.PhotoImage(image=img)
