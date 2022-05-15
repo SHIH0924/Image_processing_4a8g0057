@@ -419,6 +419,24 @@ def Bilateral_Filter():#雙邊濾波器函數
     except Exception:
         msgbox.showerror("Error", "Median Filter error!!!")
 
+def Harris_Corner_Detector():#哈里斯邊角偵測
+    try:
+        # 將輸入圖像轉換為
+        # 灰度色彩空間
+        operatedImage = cv.cvtColor(im.im, cv.COLOR_BGR2GRAY)
+        #修改數據類型
+        # 設置為 32 位浮點數
+        operatedImage = np.float32(operatedImage)
+        # 應用 cv2.cornerHarris 方法
+        dest = cv.cornerHarris(operatedImage, 2, 5, 0.07)
+        # 結果通過擴張的角標記
+        dest = cv.dilate(dest, None)
+        # 恢復到原始圖像
+        im.im[dest > 0.01 * dest.max()]=[0, 0, 255]
+        Intkinter(im.im)
+    except Exception:
+        msgbox.showerror("Error", "Median Filter error!!!")
+
 win=tk.Tk()                             # 宣告一視窗
 win.title("影像處理程式開發平台")        # 視窗名稱
 win.geometry("750x500")                 # 視窗大小(寬x高)
@@ -469,7 +487,7 @@ list2.add_cascade(label="鄰域處理功能", menu=list2_2)
 menubar.add_cascade(label="Image Processing", menu=list2)
 
 list3=tk.Menu(menubar)                           
-list3.add_command(label="影像二值化", command=Thresholding)
+list3.add_command(label="Harris Corner Detector", command=Harris_Corner_Detector)
 list3.add_command(label="直方圖等化", command=opencv_histogram_equalizes)
 list3.add_command(label="透視投影轉換", command=Perspective_Transform)
 menubar.add_cascade(label="Detector", menu=list3)
