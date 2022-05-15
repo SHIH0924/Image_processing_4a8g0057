@@ -468,6 +468,12 @@ list2_2.add_command(label="雙邊濾波器", command=Bilateral_Filter)
 list2.add_cascade(label="鄰域處理功能", menu=list2_2)
 menubar.add_cascade(label="Image Processing", menu=list2)
 
+list3=tk.Menu(menubar)                           
+list3.add_command(label="影像二值化", command=Thresholding)
+list3.add_command(label="直方圖等化", command=opencv_histogram_equalizes)
+list3.add_command(label="透視投影轉換", command=Perspective_Transform)
+menubar.add_cascade(label="Detector", menu=list3)
+
 menubar.add_command(label="Quit", command=win.destroy)
 win.config(menu=menubar)# 設定視窗的選單列
 win.mainloop()# 重覆執行全程式並不斷重覆
