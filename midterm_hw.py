@@ -561,6 +561,44 @@ def Simple_Contour():#簡單輪廓
     except Exception:
         msgbox.showerror("Error", "Median Filter error!!!")
 
+def Convex_Hull():#凸包
+    try:
+        image = im.im
+        # 將圖像轉換為灰度格式
+        img_gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
+        # 應用二進制閾值
+        ret, thresh = cv.threshold(img_gray, 150, 255, cv.THRESH_BINARY)
+        # 使用 cv2.CHAIN_APPROX_NONE 檢測二值圖像上的輪廓
+        contours, hierarchy = cv.findContours(image=thresh, mode=cv.RETR_TREE, method=cv.CHAIN_APPROX_NONE)
+        hull = []
+        # 計算每個輪廓的點
+        for i in range(len(contours)):
+            # creating convex hull object for each contour
+            hull.append(cv.convexHull(contours[i], False))
+        # 創建一個空的黑色圖像
+        drawing = np.zeros((thresh.shape[0], thresh.shape[1], 3), np.uint8)
+        # 繪製輪廓和船體點
+        for i in range(len(contours)):
+            color_contours = (0, 255, 0) # green - 輪廓顏色
+            color = (255, 0, 0) # blue - 凸包顏色
+            # draw ith contour
+            cv.drawContours(drawing, contours, i, color_contours, 1, 8, hierarchy)
+            # 繪製凸包對象
+            cv.drawContours(drawing, hull, i, color, 1, 8)
+        # 查看結果
+        cv.imshow('Convex Hull', drawing)
+        while(1):
+            k = cv.waitKey(1) & 0xFF
+            if k == 13:
+                Intkinter(drawing)
+                cv.destroyWindow('Convex Hull')
+                break
+            elif k==32:
+                cv.destroyWindow('Convex Hull')
+                break
+    except Exception:
+        msgbox.showerror("Error", "Median Filter error!!!")
+
 win=tk.Tk()                             # 宣告一視窗
 win.title("影像處理程式開發平台")        # 視窗名稱
 win.geometry("750x500")                 # 視窗大小(寬x高)
@@ -617,6 +655,7 @@ list3.add_command(label="Feature Detector", command=Feature_Detector)
 list3.add_command(label="SIFT Feature Description", command=SIFT_Feature_Description)
 list3.add_separator()
 list3.add_command(label="Simple Contour", command=Simple_Contour)
+list3.add_command(label="Convex Hull", command=Convex_Hull)
 menubar.add_cascade(label="Detector", menu=list3)
 
 menubar.add_command(label="Quit", command=win.destroy)
