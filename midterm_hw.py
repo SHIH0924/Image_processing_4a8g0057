@@ -537,9 +537,27 @@ def Simple_Contour():#簡單輪廓
         # 使用 cv2.CHAIN_APPROX_NONE 檢測二值圖像上的輪廓
         contours, hierarchy = cv.findContours(image=thresh, mode=cv.RETR_TREE, method=cv.CHAIN_APPROX_NONE)
         # 在原始圖像上繪製輪廓
-        image_copy = image.copy()
-        cv.drawContours(image=image_copy, contours=contours, contourIdx=-1, color=(0, 255, 0), thickness=2, lineType=cv.LINE_AA)
-        Intkinter(image_copy)
+        cv.namedWindow('image')# 新建視窗
+        cv.createTrackbar('B','image',0,255,nothing)             #鄰域直徑
+        cv.createTrackbar('G','image',0,255,nothing)   #顏色標準差
+        cv.createTrackbar('R','image',0,255,nothing)   #空間標準差
+        cv.createTrackbar('L','image',0,20,nothing)   #空間標準差
+        while(1):
+            B = cv.getTrackbarPos('B','image')                  #獲取數值
+            G = cv.getTrackbarPos('G','image')
+            R = cv.getTrackbarPos('R','image')
+            L = cv.getTrackbarPos('L','image')
+            image_copy = image.copy()
+            cv.drawContours(image=image_copy, contours=contours, contourIdx=-1, color=(B, G, R), thickness=L, lineType=cv.LINE_AA)
+            cv.imshow('image',image_copy)
+            k = cv.waitKey(1) & 0xFF
+            if k == 13:
+                Intkinter(image_copy)
+                cv.destroyWindow('image')
+                break
+            elif k==32:
+                cv.destroyWindow('image')
+                break
     except Exception:
         msgbox.showerror("Error", "Median Filter error!!!")
 
