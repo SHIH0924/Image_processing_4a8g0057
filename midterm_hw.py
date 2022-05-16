@@ -489,7 +489,7 @@ def Feature_Detector():#特徵偵測
     except Exception:
         msgbox.showerror("Error", "Median Filter error!!!")
 
-def Feature_Description():#特徵描述
+def SIFT_Feature_Description():#特徵描述
     try:
         x=im.im.copy()
         y=im.im.copy()
@@ -524,6 +524,22 @@ def Feature_Description():#特徵描述
                 cv.destroyWindow('image')
                 cv.destroyWindow('image2')
                 break
+    except Exception:
+        msgbox.showerror("Error", "Median Filter error!!!")
+
+def Simple_Contour():#簡單輪廓
+    try:
+        image = im.im
+        # 將圖像轉換為灰階格式
+        img_gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
+        # 應用二進制閾值
+        ret, thresh = cv.threshold(img_gray, 150, 255, cv.THRESH_BINARY)
+        # 使用 cv2.CHAIN_APPROX_NONE 檢測二值圖像上的輪廓
+        contours, hierarchy = cv.findContours(image=thresh, mode=cv.RETR_TREE, method=cv.CHAIN_APPROX_NONE)
+        # 在原始圖像上繪製輪廓
+        image_copy = image.copy()
+        cv.drawContours(image=image_copy, contours=contours, contourIdx=-1, color=(0, 255, 0), thickness=2, lineType=cv.LINE_AA)
+        Intkinter(image_copy)
     except Exception:
         msgbox.showerror("Error", "Median Filter error!!!")
 
@@ -580,7 +596,9 @@ list3=tk.Menu(menubar)
 list3.add_command(label="Harris Corner Detector", command=Harris_Corner_Detector)
 list3.add_command(label="Canny Edge Detector", command=Canny_Edge_Detector)
 list3.add_command(label="Feature Detector", command=Feature_Detector)
-list3.add_command(label="Feature Description", command=Feature_Description)
+list3.add_command(label="SIFT Feature Description", command=SIFT_Feature_Description)
+list3.add_separator()
+list3.add_command(label="Simple Contour", command=Simple_Contour)
 menubar.add_cascade(label="Detector", menu=list3)
 
 menubar.add_command(label="Quit", command=win.destroy)
