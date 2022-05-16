@@ -446,6 +446,49 @@ def Canny_Edge_Detector():#邊緣偵測
     except Exception:
         msgbox.showerror("Error", "Median Filter error!!!")
 
+def Feature_Detector():#特徵偵測
+    try:
+        img = im.im
+        sfname = filedialog.askopenfilename(title='選擇要開啟的檔案',
+        # 開起對話框，對話框名稱
+                                            filetypes=[# 文件能選擇的類型
+                                                ('All Files','*'),
+                                                ("jpeg files","*.jpg"),
+                                                ("png files","*.png"),
+                                                ("gif files","*.gif")])
+        img2 = cv_imread(sfname)
+        gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+        gray2 = cv.cvtColor(img2, cv.COLOR_BGR2GRAY)
+        #特徵量
+        detector = cv.ORB_create()
+        kp1, des1 = detector.detectAndCompute(gray, None)
+        kp2, des2 = detector.detectAndCompute(gray2, None)
+        #比較器
+        bf = cv.BFMatcher(cv.NORM_HAMMING)
+        # 載入特徵點
+        matches = bf.match(des1, des2)
+        matches = sorted(matches, key = lambda x:x.distance)
+        # 表示結果
+        h1, w1, c1 = img.shape[:3]
+        h2, w2, c2 = img2.shape[:3]
+        height = max([h1,h2])
+        width = w1 + w2
+        out = np.zeros((height, width, 3), np.uint8)
+        cv.drawMatches(img, kp1, img2, kp2, matches[:50],out, flags=0)
+        cv.namedWindow('image')
+        cv.imshow("image", out)
+        while(1):
+            k = cv.waitKey(1) & 0xFF
+            if k == 13:
+                Intkinter(out)
+                cv.destroyWindow('image')
+                break
+            elif k==32:
+                cv.destroyWindow('image')
+                break
+    except Exception:
+        msgbox.showerror("Error", "Median Filter error!!!")
+
 win=tk.Tk()                             # 宣告一視窗
 win.title("影像處理程式開發平台")        # 視窗名稱
 win.geometry("750x500")                 # 視窗大小(寬x高)
@@ -498,7 +541,7 @@ menubar.add_cascade(label="Image Processing", menu=list2)
 list3=tk.Menu(menubar)                           
 list3.add_command(label="Harris Corner Detector", command=Harris_Corner_Detector)
 list3.add_command(label="Canny Edge Detector", command=Canny_Edge_Detector)
-list3.add_command(label="透視投影轉換", command=Perspective_Transform)
+list3.add_command(label="Feature Detector", command=Feature_Detector)
 menubar.add_cascade(label="Detector", menu=list3)
 
 menubar.add_command(label="Quit", command=win.destroy)
