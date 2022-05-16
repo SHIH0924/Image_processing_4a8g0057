@@ -489,6 +489,44 @@ def Feature_Detector():#特徵偵測
     except Exception:
         msgbox.showerror("Error", "Median Filter error!!!")
 
+def Feature_Description():#特徵描述
+    try:
+        x=im.im.copy()
+        y=im.im.copy()
+        img = x
+        gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+        # 创建sift对象，调用detectAndCompute()函数
+        sift = cv.SIFT_create()
+        kp, des = sift.detectAndCompute(gray,None)
+        # 画出特征点
+        img = cv.drawKeypoints(img, kp, img)
+        cv.imshow('image', img)
+        img2 = y
+        gray2 = cv.cvtColor(img2, cv.COLOR_BGR2GRAY)
+        # 创建sift对象，调用detectAndCompute()函数
+        sift2 = cv.SIFT_create()
+        kp2, des2 = sift2.detectAndCompute(gray2,None)
+        img2 = cv.drawKeypoints(img2, kp2, img2,flags=cv.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+        cv.imshow('image2', img2)
+        while(1):
+            k = cv.waitKey(1) & 0xFF
+            if k == 97:
+                Intkinter(img)
+                cv.destroyWindow('image')
+                cv.destroyWindow('image2')
+                break
+            if k == 115:
+                Intkinter(img2)
+                cv.destroyWindow('image')
+                cv.destroyWindow('image2')
+                break
+            if k == 32:
+                cv.destroyWindow('image')
+                cv.destroyWindow('image2')
+                break
+    except Exception:
+        msgbox.showerror("Error", "Median Filter error!!!")
+
 win=tk.Tk()                             # 宣告一視窗
 win.title("影像處理程式開發平台")        # 視窗名稱
 win.geometry("750x500")                 # 視窗大小(寬x高)
@@ -542,6 +580,7 @@ list3=tk.Menu(menubar)
 list3.add_command(label="Harris Corner Detector", command=Harris_Corner_Detector)
 list3.add_command(label="Canny Edge Detector", command=Canny_Edge_Detector)
 list3.add_command(label="Feature Detector", command=Feature_Detector)
+list3.add_command(label="Feature Description", command=Feature_Description)
 menubar.add_cascade(label="Detector", menu=list3)
 
 menubar.add_command(label="Quit", command=win.destroy)
