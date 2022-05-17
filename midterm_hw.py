@@ -747,6 +747,33 @@ def tophat():#執行形態學頂帽變換
     except Exception:
         msgbox.showerror("Error", "Median Filter error!!!")
 
+def blackhat():#執行形態學黑帽變換
+    try:
+        input_image = im.im
+        img = cv.cvtColor(input_image, cv.COLOR_BGR2GRAY) 
+        cv.namedWindow('image')# 新建視窗
+        cv.createTrackbar('x','image',10,200,nothing)
+        cv.createTrackbar('y','image',10,200,nothing)
+        while(1):
+            x = cv.getTrackbarPos('x','image')
+            y = cv.getTrackbarPos('y','image')
+            # 獲取要在 Top-Hat 中使用的內核
+            filterSize =(x, y)
+            kernel = cv.getStructuringElement(cv.MORPH_RECT, filterSize)
+            # 應用Top-Hat操作
+            blackhat = cv.morphologyEx(img, cv.MORPH_BLACKHAT, kernel)
+            cv.imshow("image", blackhat)
+            k = cv.waitKey(1) & 0xFF
+            if k == 13:
+                Intkinter(blackhat)
+                cv.destroyWindow('image')
+                break
+            elif k==32:
+                cv.destroyWindow('image')
+                break
+    except Exception:
+        msgbox.showerror("Error", "Median Filter error!!!")
+
 win=tk.Tk()                             # 宣告一視窗
 win.title("影像處理程式開發平台")        # 視窗名稱
 win.geometry("750x500")                 # 視窗大小(寬x高)
@@ -811,6 +838,7 @@ list3.add_command(label="eroding", command=eroding)
 list3.add_command(label="perim", command=perim)
 list3.add_command(label="Skeletonize", command=Skeletonize)
 list3.add_command(label="tophat", command=tophat)
+list3.add_command(label="blackhat", command=blackhat)
 menubar.add_cascade(label="Detector", menu=list3)
 
 menubar.add_command(label="Quit", command=win.destroy)
