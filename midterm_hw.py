@@ -645,23 +645,36 @@ def Bounding_boxes():#邊界框
     except Exception:
         msgbox.showerror("Error", "Median Filter error!!!")
 
-def Dilating():#擴張
+def Basic_morphology(x):
+    cv.x=x
     try:
-        img=im.im
-        kernal=np.ones((2,2),np.uint8)
-        des=cv.dilate(img,kernal,iterations=1)
-        Intkinter(des)
+        cv.namedWindow('image')# 新建視窗
+        cv.createTrackbar('frequency','image',0,20,nothing)
+        cv.createTrackbar('x','image',0,20,nothing)
+        cv.createTrackbar('y','image',0,20,nothing)
+        while(1):
+            frequency = cv.getTrackbarPos('frequency','image')
+            x = cv.getTrackbarPos('x','image')
+            y = cv.getTrackbarPos('y','image')
+            img=im.im
+            kernal=np.ones((x,y),np.uint8)
+            des=cv.x(img,kernal,iterations=frequency)
+            cv.imshow('image',des)
+            k = cv.waitKey(1) & 0xFF
+            if k == 13:
+                Intkinter(des)
+                cv.destroyWindow('image')
+                break
+            elif k==32:
+                cv.destroyWindow('image')
+                break
     except Exception:
         msgbox.showerror("Error", "Median Filter error!!!")
+def Dilating():#擴張
+    Basic_morphology(cv.dilate)
 
 def eroding():#侵蝕
-    try:
-        img=im.im
-        kernal=np.ones((2,2),np.uint8)
-        des=cv.erode(img,kernal,iterations=1)
-        Intkinter(des)
-    except Exception:
-        msgbox.showerror("Error", "Median Filter error!!!")
+    Basic_morphology(cv.erode)
 
 win=tk.Tk()                             # 宣告一視窗
 win.title("影像處理程式開發平台")        # 視窗名稱
