@@ -18,7 +18,6 @@ def ROI():                                  # ROI函式
         while(1):                           # 存檔
             k = cv.waitKey(1) & 0xFF
             if k == 13:# 如果按下ENTER則跳出存檔對話框
-                cv.imwrite("image_roi.png", imCrop)
                 fname = filedialog.asksaveasfilename(
                                                 title=u'保存文件', 
                                                 filetypes=[
