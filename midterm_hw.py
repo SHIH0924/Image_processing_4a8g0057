@@ -806,12 +806,12 @@ menubar.add_cascade(label="Setting", menu=list1)
 list2=tk.Menu(menubar)                           
 list2.add_command(label="影像二值化", command=Thresholding)
 list2.add_command(label="直方圖等化", command=opencv_histogram_equalizes)
-list2.add_command(label="透視投影轉換", command=Perspective_Transform)
 
 list2_1=tk.Menu(menubar)# 在選單列下的子選單建立一個子選單
 list2_1.add_command(label="平移", command=Moving_Image)
 list2_1.add_command(label="旋轉", command=Rotate_The_Image)
 list2_1.add_command(label="仿射轉換", command=Affine_Transform)
+list2_1.add_command(label="透視投影轉換", command=Perspective_Transform)
 list2.add_cascade(label="幾何轉換功能", menu=list2_1)
 
 list2_2=tk.Menu(menubar)# 在選單列下的子選單建立一個子選單
