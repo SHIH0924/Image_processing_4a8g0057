@@ -676,6 +676,31 @@ def Dilating():#擴張
 def eroding():#侵蝕
     Basic_morphology(cv.erode)
 
+def perim():#邊緣
+    try:
+        input_image = im.im
+        img = cv.cvtColor(input_image, cv.COLOR_BGR2GRAY) 
+        cv.namedWindow('image')# 新建視窗
+        cv.createTrackbar('x','image',10,200,nothing)
+        cv.createTrackbar('y','image',10,200,nothing)
+        while(1):
+            x = cv.getTrackbarPos('x','image')
+            y = cv.getTrackbarPos('y','image')
+            kernel = np.ones((x,y),np.uint8)
+            dilation = cv.dilate(img,kernel,iterations = 1)
+            diff2 = dilation - img
+            cv.imshow("image", diff2)
+            k = cv.waitKey(1) & 0xFF
+            if k == 13:
+                Intkinter(diff2)
+                cv.destroyWindow('image')
+                break
+            elif k==32:
+                cv.destroyWindow('image')
+                break
+    except Exception:
+        msgbox.showerror("Error", "Median Filter error!!!")
+
 def tophat():#執行形態學頂帽變換
     try:
         input_image = im.im
@@ -764,6 +789,7 @@ list3.add_command(label="Bounding boxes", command=Bounding_boxes)
 list3.add_separator()
 list3.add_command(label="Dilating", command=Dilating)
 list3.add_command(label="eroding", command=eroding)
+list3.add_command(label="perim", command=perim)
 list3.add_command(label="tophat", command=tophat)
 menubar.add_cascade(label="Detector", menu=list3)
 
