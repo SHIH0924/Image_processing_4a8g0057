@@ -645,6 +645,24 @@ def Bounding_boxes():#邊界框
     except Exception:
         msgbox.showerror("Error", "Median Filter error!!!")
 
+def Dilating():#擴張
+    try:
+        img=im.im
+        kernal=np.ones((2,2),np.uint8)
+        des=cv.dilate(img,kernal,iterations=1)
+        Intkinter(des)
+    except Exception:
+        msgbox.showerror("Error", "Median Filter error!!!")
+
+def eroding():#侵蝕
+    try:
+        img=im.im
+        kernal=np.ones((2,2),np.uint8)
+        des=cv.erode(img,kernal,iterations=1)
+        Intkinter(des)
+    except Exception:
+        msgbox.showerror("Error", "Median Filter error!!!")
+
 win=tk.Tk()                             # 宣告一視窗
 win.title("影像處理程式開發平台")        # 視窗名稱
 win.geometry("750x500")                 # 視窗大小(寬x高)
@@ -703,6 +721,9 @@ list3.add_separator()
 list3.add_command(label="Simple Contour", command=Simple_Contour)
 list3.add_command(label="Convex Hull", command=Convex_Hull)
 list3.add_command(label="Bounding boxes", command=Bounding_boxes)
+list3.add_separator()
+list3.add_command(label="Dilating", command=Dilating)
+list3.add_command(label="eroding", command=eroding)
 menubar.add_cascade(label="Detector", menu=list3)
 
 menubar.add_command(label="Quit", command=win.destroy)
