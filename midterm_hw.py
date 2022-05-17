@@ -676,6 +676,25 @@ def Dilating():#擴張
 def eroding():#侵蝕
     Basic_morphology(cv.erode)
 
+def Skeletonize():#骨架化
+    img = cv.cvtColor(im.im, cv.COLOR_BGR2GRAY)
+    size = np.size(img)
+    skel = np.zeros(img.shape,np.uint8)
+    ret,img = cv.threshold(img,127,255,0)
+    element = cv.getStructuringElement(cv.MORPH_CROSS,(3,3))
+    done = False
+
+    while( not done):
+        eroded = cv.erode(img,element)
+        temp = cv.dilate(eroded,element)
+        temp = cv.subtract(img,temp)
+        skel = cv.bitwise_or(skel,temp)
+        img = eroded.copy()
+        zeros = size - cv.countNonZero(img)
+        if zeros==size:
+            done = True
+    Intkinter(skel)
+
 def perim():#邊緣
     try:
         input_image = im.im
@@ -790,6 +809,7 @@ list3.add_separator()
 list3.add_command(label="Dilating", command=Dilating)
 list3.add_command(label="eroding", command=eroding)
 list3.add_command(label="perim", command=perim)
+list3.add_command(label="Skeletonize", command=Skeletonize)
 list3.add_command(label="tophat", command=tophat)
 menubar.add_cascade(label="Detector", menu=list3)
 
