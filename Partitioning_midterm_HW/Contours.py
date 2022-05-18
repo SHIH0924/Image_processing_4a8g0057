@@ -16,12 +16,12 @@ def Simple_Contour():#簡單輪廓
         contours, hierarchy = cv.findContours(image=thresh, mode=cv.RETR_TREE, method=cv.CHAIN_APPROX_NONE)
         # 在原始圖像上繪製輪廓
         cv.namedWindow('image')# 新建視窗
-        cv.createTrackbar('B','image',0,255,nothing)             #鄰域直徑
-        cv.createTrackbar('G','image',0,255,nothing)   #顏色標準差
-        cv.createTrackbar('R','image',0,255,nothing)   #空間標準差
-        cv.createTrackbar('L','image',0,20,nothing)   #空間標準差
+        cv.createTrackbar('B','image',0,255,nothing)   #線體顏色
+        cv.createTrackbar('G','image',0,255,nothing)   #線體顏色
+        cv.createTrackbar('R','image',0,255,nothing)   #線體顏色
+        cv.createTrackbar('L','image',0,20,nothing)    #線體粗細
         while(1):
-            B = cv.getTrackbarPos('B','image')                  #獲取數值
+            B = cv.getTrackbarPos('B','image')         #獲取數值
             G = cv.getTrackbarPos('G','image')
             R = cv.getTrackbarPos('R','image')
             L = cv.getTrackbarPos('L','image')
