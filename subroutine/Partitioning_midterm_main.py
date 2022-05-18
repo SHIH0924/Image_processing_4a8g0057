@@ -2,15 +2,15 @@ import cv2 as cv
 import tkinter as tk
 from PIL import Image, ImageTk
 from sympy import false, true                  
-import subroutine.im as im
-import subroutine.IO as IO
-import subroutine.setting as setting
-import subroutine.Image_Processing as Image_Processing
-import subroutine.Geometric_transformation as Geometric_transformation
-import subroutine.Neighborhood_processing as Neighborhood_processing
-import subroutine.Detector as Detector
-import subroutine.Contours as Contours
-import subroutine.Morphological_Transformations as Morphological_Transformations
+import im
+import IO
+import setting
+import Image_Processing
+import Geometric_transformation
+import Neighborhood_processing
+import Detector
+import Contours
+import Morphological_Transformations
 
 def Intkinter(intkimg):
     cv2image = cv.cvtColor(intkimg, cv.COLOR_BGR2RGBA)
